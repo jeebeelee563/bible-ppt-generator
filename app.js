@@ -75,7 +75,9 @@ function renderPreview(chunks) {
   countEl.textContent = `총 ${chunks.length}슬라이드`;
 
   const first = chunks[0];
-  let html = '<div class="preview-verses">';
+  const label = chunkLabel(first);
+  let html = `<div class="preview-title">${label}</div>`;
+  html += '<div class="preview-verses">';
   for (const v of first) {
     html += `
       <div class="preview-verse">
@@ -92,10 +94,16 @@ function renderPreview(chunks) {
 // -- PPT generation ---------------------------------------------------------
 
 // Font size per verse count in a chunk — keeps text readable from far
-function fontSize(verseCount) {
-  if (verseCount === 1) return { num: 34, text: 54 };
-  if (verseCount === 2) return { num: 28, text: 46 };
-  return { num: 24, text: 38 }; // 3
+// Font size fixed at 54pt regardless of verse count
+function fontSize() {
+  return { num: 34, text: 54 };
+}
+
+// Label for each slide's verse range, e.g. "창세기 1:2-3"
+function chunkLabel(chunk) {
+  const first = chunk[0].num;
+  const last  = chunk[chunk.length - 1].num;
+  return first === last ? `창세기 1:${first}` : `창세기 1:${first}-${last}`;
 }
 
 function buildFileName(ref) {
@@ -112,42 +120,58 @@ async function buildPPT(chunks, ref) {
   const pptx = new PptxGenJS();
   pptx.layout = "LAYOUT_WIDE"; // 13.33" × 7.5" (16:9)
 
-  const MARGIN = 1.0;
-  const W = 13.33 - MARGIN * 2;
-  const H = 7.5  - MARGIN * 2;
+  const MARGIN  = 1.0;
+  const W       = 13.33 - MARGIN * 2;
+  // Title strip: 0.25" from top, 0.55" tall → main text starts at y=1.0
+  const TITLE_Y = 0.28;
+  const TEXT_Y  = 1.05;
+  const TEXT_H  = 7.5 - TEXT_Y - 0.7; // 0.7" bottom margin
 
   for (const chunk of chunks) {
     const slide = pptx.addSlide();
     slide.background = { color: "000000" };
 
-    const fs = fontSize(chunk.length);
-    const textRuns = [];
+    const fs = fontSize();
 
+    // ── Top-left heading: e.g. "창세기 1:2-3" ──────────────────────────────
+    slide.addText(chunkLabel(chunk), {
+      x: MARGIN,
+      y: TITLE_Y,
+      w: W,
+      h: 0.55,
+      fontFace: "HY견고딕",
+      fontSize: 22,
+      color: "555555",
+      valign: "top",
+    });
+
+    // ── Verse body ───────────────────────────────────────────────────────────
+    const textRuns = [];
     chunk.forEach((verse, idx) => {
-      // Verse number — gray, smaller
+      // Verse number — gray
       textRuns.push({
         text: `[${verse.num}]  `,
         options: { fontSize: fs.num, color: "666666", bold: false, fontFace: "HY견고딕" },
       });
-      // Verse body — white
+      // Verse text — white, 54pt fixed
       textRuns.push({
         text: verse.text,
         options: { fontSize: fs.text, color: "FFFFFF", fontFace: "HY견고딕", breakLine: true },
       });
-      // Spacer between verses (not after last)
+      // Spacer between verses
       if (idx < chunk.length - 1) {
         textRuns.push({
           text: " ",
-          options: { fontSize: Math.round(fs.text * 0.45), breakLine: true },
+          options: { fontSize: 26, breakLine: true },
         });
       }
     });
 
     slide.addText(textRuns, {
       x: MARGIN,
-      y: MARGIN,
+      y: TEXT_Y,
       w: W,
-      h: H,
+      h: TEXT_H,
       fontFace: "HY견고딕",
       valign: "middle",
       lineSpacingMultiple: 1.35,

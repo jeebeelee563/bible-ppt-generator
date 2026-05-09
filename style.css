@@ -194,6 +194,16 @@ input[type="text"]::placeholder {
   font-size: 0.9rem;
 }
 
+/* Slide title (top-left heading) */
+.preview-title {
+  position: absolute;
+  top: 6%;
+  left: 8%;
+  font-size: clamp(0.55rem, 1.5vw, 0.8rem);
+  color: #555;
+  font-family: 'HY견고딕', '맑은 고딕', sans-serif;
+}
+
 /* Verse blocks inside preview */
 .preview-verses {
   width: 100%;
