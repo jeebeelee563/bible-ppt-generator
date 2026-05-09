@@ -120,61 +120,53 @@ async function buildPPT(chunks, ref) {
   const pptx = new PptxGenJS();
   pptx.layout = "LAYOUT_WIDE"; // 13.33" × 7.5" (16:9)
 
-  const MARGIN  = 1.0;
-  const W       = 13.33 - MARGIN * 2;
-  // Title strip: 0.25" from top, 0.55" tall → main text starts at y=1.0
-  const TITLE_Y = 0.28;
-  const TEXT_Y  = 1.05;
-  const TEXT_H  = 7.5 - TEXT_Y - 0.7; // 0.7" bottom margin
+  // CLAUDE.md rules: 54pt for everything, title top-left, black bg
+  const PT    = 54;
+  const MARGIN = 1.0;
+  const W      = 13.33 - MARGIN * 2;
+  const TITLE_Y = 0.4;
+  const TITLE_H = 1.0;   // enough room for 54pt title line
+  const BODY_Y  = 1.5;
+  const BODY_H  = 7.5 - BODY_Y - 0.5;
 
   for (const chunk of chunks) {
     const slide = pptx.addSlide();
     slide.background = { color: "000000" };
 
-    const fs = fontSize();
-
-    // ── Top-left heading: e.g. "창세기 1:2-3" ──────────────────────────────
+    // ── Title: top-left, 54pt, gray ─────────────────────────────────────────
     slide.addText(chunkLabel(chunk), {
       x: MARGIN,
       y: TITLE_Y,
       w: W,
-      h: 0.55,
+      h: TITLE_H,
       fontFace: "HY견고딕",
-      fontSize: 22,
-      color: "555555",
+      fontSize: PT,
+      color: "666666",
       valign: "top",
+      align: "left",
     });
 
-    // ── Verse body ───────────────────────────────────────────────────────────
+    // ── Body: verses below title, 54pt, white ────────────────────────────────
     const textRuns = [];
     chunk.forEach((verse, idx) => {
-      // Verse number — gray
-      textRuns.push({
-        text: `[${verse.num}]  `,
-        options: { fontSize: fs.num, color: "666666", bold: false, fontFace: "HY견고딕" },
-      });
-      // Verse text — white, 54pt fixed
       textRuns.push({
         text: verse.text,
-        options: { fontSize: fs.text, color: "FFFFFF", fontFace: "HY견고딕", breakLine: true },
+        options: { fontSize: PT, color: "FFFFFF", fontFace: "HY견고딕", breakLine: true },
       });
-      // Spacer between verses
+      // blank line between verses
       if (idx < chunk.length - 1) {
-        textRuns.push({
-          text: " ",
-          options: { fontSize: 26, breakLine: true },
-        });
+        textRuns.push({ text: " ", options: { fontSize: 18, breakLine: true } });
       }
     });
 
     slide.addText(textRuns, {
       x: MARGIN,
-      y: TEXT_Y,
+      y: BODY_Y,
       w: W,
-      h: TEXT_H,
+      h: BODY_H,
       fontFace: "HY견고딕",
-      valign: "middle",
-      lineSpacingMultiple: 1.35,
+      valign: "top",
+      lineSpacingMultiple: 1.3,
     });
   }
 
