@@ -1,0 +1,240 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #111118;
+  color: #d0d0d0;
+  font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 16px 80px;
+}
+
+.container {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
+h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* Input row */
+.input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 15px 18px;
+  font-size: 1.25rem;
+  background: #1c1c28;
+  border: 2px solid #2e2e45;
+  border-radius: 10px;
+  color: #ffffff;
+  outline: none;
+  font-family: inherit;
+  letter-spacing: 0.5px;
+  transition: border-color 0.15s;
+}
+
+input[type="text"]:focus {
+  border-color: #5b6af0;
+}
+
+input[type="text"]::placeholder {
+  color: #44445a;
+}
+
+#generateBtn {
+  padding: 15px 24px;
+  background: #5b6af0;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+#generateBtn:hover {
+  background: #4a58e0;
+}
+
+#generateBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Example chips */
+.examples {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.examples-label {
+  font-size: 0.8rem;
+  color: #555;
+  margin-right: 2px;
+}
+
+.chip {
+  background: #1c1c28;
+  border: 1px solid #2e2e45;
+  color: #888;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.chip:hover {
+  border-color: #5b6af0;
+  color: #a0aaff;
+}
+
+/* Status bar */
+.status {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.status.hidden { display: none; }
+
+.status.loading {
+  background: #1c1c28;
+  color: #888;
+}
+
+.status.success {
+  background: #0f2a1a;
+  color: #4dbd74;
+  border: 1px solid #1f4a2e;
+}
+
+.status.error {
+  background: #2a0f0f;
+  color: #e07070;
+  border: 1px solid #4a1f1f;
+}
+
+/* Preview */
+.preview-wrap {
+  margin-bottom: 32px;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.preview-label {
+  font-size: 0.78rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.slide-count {
+  font-size: 0.78rem;
+  color: #555;
+}
+
+/* The slide preview — 16:9 black canvas */
+.slide-canvas {
+  background: #000000;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  border: 1px solid #2a2a38;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7% 8%;
+  position: relative;
+  overflow: hidden;
+}
+
+.placeholder-text {
+  color: #2a2a3a;
+  font-size: 0.9rem;
+}
+
+/* Verse blocks inside preview */
+.preview-verses {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9em;
+}
+
+.preview-verse {
+  line-height: 1.55;
+}
+
+.verse-num {
+  font-size: clamp(0.65rem, 2vw, 0.95rem);
+  color: #666;
+  font-weight: 700;
+  margin-right: 0.4em;
+  font-family: 'Malgun Gothic', sans-serif;
+}
+
+.verse-text {
+  font-size: clamp(0.85rem, 2.8vw, 1.4rem);
+  color: #ffffff;
+  font-family: 'HY견고딕', '맑은 고딕', sans-serif;
+  font-weight: 400;
+  word-break: keep-all;
+}
+
+/* More slides badge */
+.more-slides {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 0.72rem;
+  color: #333;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  color: #444;
+  font-size: 0.78rem;
+  line-height: 1.8;
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>성경 PPT 생성기</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>성경 PPT 생성기</h1>
+      <p class="subtitle">성경 구절 참조를 입력하면 교회용 PPT를 바로 다운로드합니다</p>
+    </header>
+
+    <main>
+      <div class="input-row">
+        <input
+          type="text"
+          id="verseInput"
+          placeholder="예: 창1:1  /  창1:2-3  /  창1"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="generateBtn">PPT 생성</button>
+      </div>
+
+      <div class="examples">
+        <span class="examples-label">예시</span>
+        <button class="chip" data-ref="창1:1">창1:1</button>
+        <button class="chip" data-ref="창1:2-3">창1:2-3</button>
+        <button class="chip" data-ref="창1:1-5">창1:1-5</button>
+        <button class="chip" data-ref="창1">창1 전체</button>
+      </div>
+
+      <div id="status" class="status hidden"></div>
+
+      <div class="preview-wrap">
+        <div class="preview-header">
+          <span class="preview-label">슬라이드 미리보기</span>
+          <span id="slideCount" class="slide-count"></span>
+        </div>
+        <div class="slide-canvas" id="slidePreview">
+          <p class="placeholder-text">구절을 입력하면 첫 슬라이드 미리보기가 표시됩니다</p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>지원: 창세기 1장 (1–31절) · 슬라이드당 최대 3절 자동 분할</p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
